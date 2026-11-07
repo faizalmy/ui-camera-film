@@ -10,7 +10,8 @@ import { clickSweep, type Layer, type Scene, type Sweep } from "../engine/scene"
 
 export const PAGE = { src: "page.html", width: 1440, height: 900 }
 export const PAGE_DURATION_S = 14
-export const CLICKS = { intro: 6.2, customize: 10.4 }
+// Click waves last 1.4 s and must end before their shot cuts (7.0, 11.6).
+export const CLICKS = { intro: 5.5, customize: 10.1 }
 
 const HERO = { scope: "main section", nth: 0 }
 const BAR = '[data-slot="frame-panel-header"]'
@@ -33,8 +34,8 @@ const layers: Layer[] = [
 ]
 
 const sweeps: Sweep[] = [
-  // Hero: pill always, buttons at random.
-  { from: 5.0, to: 7.0, x0: 300, x1: 1150, seed: 1, keep: 0.6, picks: [{ ...HERO, sel: "a.group", index: 0, always: true }, { ...HERO, sel: 'a[data-slot="button"]' }] },
+  // Hero: pill always, one button at random (seed 3).
+  { from: 5.0, to: 7.0, x0: 300, x1: 1150, seed: 3, keep: 0.6, picks: [{ ...HERO, sel: "a.group", index: 0, always: true }, { ...HERO, sel: 'a[data-slot="button"]' }] },
   // Toolbar: frame panel always, tools at random.
   {
     from: 9.0, to: 11.4, x0: 50, x1: 1390, seed: 2, keep: 0.4,

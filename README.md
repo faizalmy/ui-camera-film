@@ -11,12 +11,13 @@ It is also a Claude Code skill (`SKILL.md`): drop the folder into `~/.claude/ski
 
 ```bash
 cp -R template my-film && cd my-film && npm i
-pip install playwright   # once; the script falls back to installed Chrome
+pip install playwright && playwright install chromium   # once (or it uses installed Chrome)
 python3 scripts/capture.py https://example.com public/page.html --width 1440 --height 900 --dark
 npx remotion studio src/index.ts
 ```
 
-Then edit `src/page/scene.ts` (what builds in and where light waves run, as CSS selectors and seconds)
+Then `python3 scripts/list_components.py public/page.html` (components with boxes, plus a screenshot)
+and rewrite `src/page/scene.ts` for your page (what builds in and where light waves run, as CSS selectors and seconds)
 and the shots in `src/page/PageCamera.tsx`.
 
 ## Layout

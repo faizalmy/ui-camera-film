@@ -32,10 +32,10 @@ export function UsagePanel({ t, id }: { t: number; id?: string }) {
   const [hold] = useState(() => delayRender("avatar image"))
   useEffect(() => {
     let raf = 0
-    const started = performance.now()
     const check = () => {
       const img = ref.current?.querySelector<HTMLImageElement>('[data-slot="avatar-image"]')
-      if ((img && img.complete) || performance.now() - started > 8000) continueRender(hold)
+      // No wall-clock fallback: a slow image must fail the render (delayRender timeout), never swap to initials.
+      if (img && img.complete) continueRender(hold)
       else raf = requestAnimationFrame(check)
     }
     check()

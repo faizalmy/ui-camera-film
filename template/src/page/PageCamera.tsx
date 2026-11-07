@@ -19,8 +19,8 @@ const SHOTS: Shot[] = [
 // Pointer in page px: into the hero, click Watch Intro, then Customize.
 const PTR: Key<{ x: number; y: number; o: number }>[] = [
   [0, { x: 760, y: 520, o: 0 }],
-  [5.2, { x: 760, y: 520, o: 0 }],
-  [5.6, { x: 720, y: 480, o: 1 }],
+  [4.5, { x: 760, y: 520, o: 0 }],
+  [4.8, { x: 720, y: 480, o: 1 }],
   [CLICKS.intro - 0.45, { x: 640, y: 432, o: 1 }],
   [CLICKS.intro + 0.35, { x: 640, y: 432, o: 1 }],
   [7.2, { x: 900, y: 640, o: 1 }],

@@ -29,10 +29,11 @@ const layers: Layer[] = [
   { ...Q, sel: `${QP} > :nth-child(1) p > span.inline-flex`, index: 1, kind: "roll", at: 7.2, dur: 1.4, stagger: 0.1 },
   { ...Q, sel: `${QP} > :nth-child(2)`, kind: "wipe", at: 7.4, dur: 1.8 },
   { ...Q, sel: `${QP} > :nth-child(3)`, kind: "wipe", at: 8.2, dur: 1.0 },
+  // Annual row and Save land before the quote wave crosses them.
   // Line items are motion elements that own their opacity: animate their contents.
   { ...Q, sel: `${QP} > :nth-child(4) > *`, children: true, at: 8.3, dur: 0.8, stagger: 0.18, dist: 8 },
-  { ...Q, sel: `${QP} > :nth-child(5)`, at: 8.8, dur: 0.8 },
-  { ...Q, sel: ":scope > :nth-child(3)", at: 9.1, dur: 0.8 },
+  { ...Q, sel: `${QP} > :nth-child(5)`, at: 8.5, dur: 0.8 },
+  { ...Q, sel: ":scope > :nth-child(3)", at: 8.7, dur: 0.8 },
 ]
 
 const PANEL = '[data-slot="frame-panel"]'
@@ -42,19 +43,21 @@ const sweeps: Sweep[] = [
     from: 4.6, to: 6.6, x0: 0, x1: 670, seed: 1, keep: 0.45,
     picks: [{ ...P, sel: PANEL, always: true }, { ...P, sel: '[data-slot="radio-group"] > *' }, { ...P, sel: '[data-slot="toggle-group"] > *' }],
   },
-  // Quote zoom (x 680-1024): panel always, random switch and Save.
+  // Quote zoom (x 680-1024): panel always; switch, Save and badges at random
+  // (seed 3 lights Save and one badge). Crosses mid-card at frame 565.
   {
-    from: 8.4, to: 10.5, x0: 680, x1: 1024, seed: 2, keep: 0.5,
-    picks: [{ ...Q, sel: PANEL, always: true }, { ...Q, sel: '[data-slot="switch"]' }, { ...Q, sel: "footer button" }],
+    from: 8.6, to: 10.8, x0: 680, x1: 1024, seed: 3, keep: 0.55,
+    picks: [{ ...Q, sel: PANEL, always: true }, { ...Q, sel: '[data-slot="switch"]' }, { ...Q, sel: "footer button" }, { ...Q, sel: '[data-slot="badge"]' }],
   },
   // Ruler drag: one slow sweep across the planner, never on the rail or thumb.
   {
     from: DRAG.from, to: DRAG.to + 0.4, x0: 0, x1: 670, seed: 3, keep: 0.5,
     picks: [
+      // The tight drag shot keeps the panel edge out of frame: the tier pill is always lit.
+      { ...P, sel: ".bg-primary\\/10", always: true },
       { ...P, sel: PANEL, always: true },
-      { ...P, sel: ".bg-primary\\/10" },
+      { ...P, sel: '[data-slot="badge"]' },
       { ...P, sel: '[data-slot="radio-group"] > *' },
-      { ...P, sel: '[data-slot="toggle-group"] > *' },
     ],
   },
   // One wave across each pressed part.

@@ -76,6 +76,7 @@ export function CameraRig({
   // Shallower focus the closer the camera sits, like a real lens.
   const k = Math.max(c.s, 0.8)
   const fs = focusScale
+  const dof = c.dof > 0.05
   const focus = `radial-gradient(ellipse ${(980 * fs) / k}px ${(300 * fs) / k}px at ${fx}px ${fy}px, #000 ${fs > 1 ? 55 : 42}%, transparent 100%)`
   // The panel's own fill can be translucent (ReUI Frame is bg-muted/50), so each
   // copy sits on the same opaque plate; otherwise the blur glows through.
@@ -97,14 +98,10 @@ export function CameraRig({
             }}
           >
             {slab ? <Slab radius={radius} /> : null}
-            {c.dof > 0.05 ? (
-              <>
-                <div style={{ ...plate, filter: `blur(${c.dof}px) brightness(${1 - 0.025 * c.dof})` }}>{panel()}</div>
-                <div style={{ ...plate, position: "absolute", inset: 0, maskImage: focus, WebkitMaskImage: focus }}>{panel()}</div>
-              </>
-            ) : (
-              <div style={plate}>{panel()}</div>
-            )}
+            {/* Always two copies, so a cut between sharp and shallow focus never
+                remounts the panel (an iframe subject would reload). */}
+            <div style={{ ...plate, filter: dof ? `blur(${c.dof}px) brightness(${1 - 0.025 * c.dof})` : undefined }}>{panel()}</div>
+            <div style={{ ...plate, position: "absolute", inset: 0, maskImage: dof ? focus : undefined, WebkitMaskImage: dof ? focus : undefined }}>{panel()}</div>
             <div style={{ position: "absolute", inset: 0 }}>
               <Pointer p={pointer} zoom={zoom} />
             </div>

@@ -3,3 +3,5 @@ out/
 public/*.html
 .env*
 .DS_Store
+.claude/
+__pycache__/

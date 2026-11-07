@@ -1,6 +1,6 @@
-// agent-activity-1 camera keys, measured bands and pointer path (merge into src/rig.ts).
-import { at, pointerFrom, track, type Key } from "../../template/src/rig"
-import { CLICKS } from "./timeline"
+// agent-activity-1 camera keys, measured bands and pointer path.
+// Paste below the generic helpers in src/rig.ts (it uses at, track,
+// pointerFrom and Key from there) and add: import { CLICKS } from "./timeline"
 
 /** Centre of the live band per step, measured off renders (panel px). Each
     change eases over 0.5 s, so focus glides down the list with the run. */

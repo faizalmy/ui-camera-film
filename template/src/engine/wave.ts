@@ -7,14 +7,20 @@ import { building, easeSine, offsetIn, rand, select } from "./dom"
 import type { Sweep } from "./scene"
 
 const LIGHT = "255,246,232"
+const DARK = "40,32,24"
 
 function ring(el: HTMLElement, root: HTMLElement, c: number, band: number, a: number, w0: number, h0: number) {
   const { x, y } = offsetIn(el, root)
   const w = el.offsetWidth
   const h = el.offsetHeight
   if (x + w < c - band * 1.6 || x > c + band * 1.6) return ""
-  const r = getComputedStyle(el).borderRadius
-  const g = `linear-gradient(100deg, rgba(${LIGHT},0) ${c - band}px, rgba(${LIGHT},${a}) ${c}px, rgba(${LIGHT},0) ${c + band}px)`
+  const cs = getComputedStyle(el)
+  const r = cs.borderRadius
+  // On a light fill a warm ring is invisible: light it with a dark tone instead.
+  const rgb = (cs.backgroundColor.match(/[\d.]+/g) ?? []).map(Number)
+  const lum = rgb.length >= 3 && (rgb[3] ?? 1) > 0.5 ? (0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]) / 255 : 0
+  const tone = lum > 0.6 ? DARK : LIGHT
+  const g = `linear-gradient(100deg, rgba(${tone},0) ${c - band}px, rgba(${tone},${a}) ${c}px, rgba(${tone},0) ${c + band}px)`
   return (
     `<div style="position:absolute;left:${x}px;top:${y}px;width:${w}px;height:${h}px;box-sizing:border-box;border-radius:${r};` +
     `border:1.5px solid transparent;background:${g} border-box;background-size:${w0}px ${h0}px;background-position:${-x}px ${-y}px;` +
@@ -29,7 +35,8 @@ export function applyWave(root: HTMLElement, layer: HTMLElement, t: number, swee
     return
   }
   const w0 = root.offsetWidth
-  const h0 = root.offsetHeight
+  // scrollHeight: a body with collapsed height still spans its content.
+  const h0 = Math.max(root.offsetHeight, root.scrollHeight)
   const rings: string[] = []
   for (const s of live) {
     const p = (t - s.from) / (s.to - s.from)

@@ -47,10 +47,10 @@ export const SHOTS: Shot[] = [
   // The drag: pans from the thumb to the total as it climbs.
   { from: 10.8, to: 14.2, a: { rx: 34, ry: -24, rz: 6, s: 1.75, lx: 430, ly: 165, dof: 12 }, b: { rx: 32.5, ry: -20, rz: 5.3, s: 1.82, lx: 680, ly: 132, dof: 12 } },
   { from: 14.2, to: 16.8, a: { rx: 33, ry: -22, rz: 6, s: 2.0, lx: 200, ly: 350, dof: 12 }, b: { rx: 31, ry: -18, rz: 5, s: 2.08, lx: 310, ly: 335, dof: 12 } },
-  { from: 16.8, to: 19.6, a: { rx: 32, ry: -24, rz: 6, s: 2.0, lx: 260, ly: 530, dof: 12 }, b: { rx: 30, ry: -20, rz: 5, s: 2.08, lx: 380, ly: 520, dof: 12 } },
-  { from: 19.6, to: 23.0, a: { rx: 24, ry: 16, rz: -4, s: 1.3, lx: 820, ly: 250, dof: 5 }, b: { rx: 22, ry: 12, rz: -3, s: 1.38, lx: 850, ly: 330, dof: 5 } },
+  { from: 16.8, to: 20.2, a: { rx: 32, ry: -24, rz: 6, s: 2.0, lx: 340, ly: 530, dof: 12 }, b: { rx: 30, ry: -20, rz: 5, s: 2.08, lx: 440, ly: 520, dof: 12 } },
+  { from: 20.2, to: 23.0, a: { rx: 24, ry: 16, rz: -4, s: 1.3, lx: 820, ly: 360, dof: 3 }, b: { rx: 22, ry: 12, rz: -3, s: 1.38, lx: 850, ly: 460, dof: 3 } },
   { from: 23.0, to: 25.8, a: { rx: 32, ry: 20, rz: -6, s: 2.0, lx: 800, ly: 560, dof: 12 }, b: { rx: 30, ry: 16, rz: -5, s: 2.08, lx: 900, ly: 552, dof: 12 } },
-  { from: 25.8, to: 30.4, a: { rx: 34, ry: -24, rz: 8, s: 1.35, lx: 430, ly: 390, dof: 4 }, b: { rx: 33, ry: -21, rz: 7, s: 1.4, lx: 370, ly: 360, dof: 4 } },
+  { from: 25.8, to: 31.0, a: { rx: 34, ry: -24, rz: 8, s: 1.35, lx: 430, ly: 390, dof: 4 }, b: { rx: 33, ry: -21, rz: 7, s: 1.4, lx: 370, ly: 360, dof: 4 } },
 ]
 export const usageCam = (t: number) => shotAt(SHOTS, t)
 /** Exposure: every shot lifts from near-black over 0.35 s, and the whole film

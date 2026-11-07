@@ -18,9 +18,21 @@ export const rand = (seed: number, n: number) => {
 export function select(root: HTMLElement, tg: Target): HTMLElement[] {
   let base: Element | undefined = root
   if (tg.scope) base = root.querySelectorAll(tg.scope)[tg.nth ?? 0]
-  if (!base) return []
+  if (!base) return warn(tg, "scope")
   const all = tg.sel === ":scope" ? [base as HTMLElement] : [...base.querySelectorAll<HTMLElement>(tg.sel)]
+  if (!all.length) return warn(tg, "sel")
   return tg.index === undefined ? all : all.slice(tg.index, tg.index + 1)
+}
+
+const warned = new Set<string>()
+/** Say once when a target matches nothing: a scene written for another page. */
+function warn(tg: Target, what: string): HTMLElement[] {
+  const key = JSON.stringify(tg)
+  if (!warned.has(key)) {
+    warned.add(key)
+    console.warn(`[ui-camera-film] ${what} matched nothing:`, tg)
+  }
+  return []
 }
 
 /** Layout position inside root (offsetLeft/Top), untouched by CSS transforms,
