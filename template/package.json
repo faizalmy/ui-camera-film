@@ -1,0 +1,19 @@
+{
+  "name": "ui-camera-film",
+  "private": true,
+  "scripts": {
+    "capture": "python3 scripts/capture.py",
+    "dev": "remotion studio src/index.ts",
+    "still": "remotion still src/index.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.540",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "remotion": "4.0.540"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "typescript": "5.9.3"
+  }
+}

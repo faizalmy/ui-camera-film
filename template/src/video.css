@@ -1,0 +1,14 @@
+/* The renderer seeks frames, so wall-clock motion must not run in a React
+   subject. Wrap it in .video-root (add .freeze outside seeked transition
+   windows). Captured pages are frozen by scripts/capture.py instead. */
+.video-root.freeze *,
+.video-root.freeze *::before,
+.video-root.freeze *::after {
+  transition: none !important;
+}
+/* Loops (spinners, shimmer): paused and seeked to the frame's clock. */
+.video-root .animate-spin,
+.video-root .shimmer {
+  animation-play-state: paused !important;
+  animation-delay: calc(var(--clock) * -1s) !important;
+}
