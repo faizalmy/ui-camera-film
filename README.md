@@ -27,3 +27,7 @@ and the shots in `src/page/PageCamera.tsx`.
 - `template/src/page/` example film of a captured page
 - `template/scripts/capture.py` any URL to one self-contained static HTML file
 - `examples/` choreography for two films of live React components (ReUI Pro blocks, not included)
+
+## License
+
+MIT, see `LICENSE`. Covers this code only: the ReUI Pro blocks the examples film are licensed separately and not included.
