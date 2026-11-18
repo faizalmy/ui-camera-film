@@ -1,6 +1,6 @@
 ---
 name: ui-camera-film
-description: Film any web page or React UI in the Ultramock style with Remotion - a slow tilted 3D camera with shallow depth of field, cut shots that lift from black, component layers that build in one by one (rise, tick fill, wipe, count up, odometer roll), and a slow light wave that lights component outlines during builds, slides and clicks. Works on a captured URL (any site) or a live React component in "drive" mode. Use when asked for "the Ultramock style", a "3D camera on the UI" shot, a cinematic tilted product/website film with depth of field, a build-in or light-wave animation of a page's components, or to reuse the ui-camera-film rig on another page or block.
+description: Film any web page or React UI in the Ultramock style with Remotion - a slow tilted 3D camera with shallow depth of field, cut shots that lift from black, component layers that build in one by one (rise, tick fill, wipe, line draw, bar grow, count up, odometer roll), and a slow light wave that lights component outlines during builds, slides and clicks. Works on a captured URL (any site) or a live React component in "drive" mode. Use when asked for "the Ultramock style", a "3D camera on the UI" shot, a cinematic tilted product/website film with depth of field, a build-in or light-wave animation of a page's components, or to reuse the ui-camera-film rig on another page or block.
 metadata:
   author: faizal
 ---
@@ -33,7 +33,8 @@ frame: render a frame twice and the PNGs are byte-identical.
 - `scene.ts`: the choreography as data. `Target` = `sel` under the root, or under the `nth` match of
   `scope` (`sel: ":scope"` = that element), `index` keeps one match.
 - `build.ts` `applyBuild(root, t, layers)`: kinds `rise` (fade up `dist` px), `tick` (grow from bottom),
-  `wipe` (reveal left to right), `count` (first number in the text counts from 0, keeps its format),
+  `wipe` (reveal left to right), `draw` (an SVG line draws along its path), `grow` (bars grow from their own
+  base: `from` bottom by default, `left` for horizontal bars, `top` for negative ones), `count` (first number in the text counts from 0, keeps its format),
   `roll` (odometer digit strips, left digits settle first; assumes Tailwind odometer markup: `.sr-only`
   value + `[aria-hidden] .flex-col` strips, else use `count`). `count` rewrites only the first text node
   holding a digit, so icons survive. `stagger` or `spread`, `children: true` for
@@ -46,6 +47,16 @@ frame: render a frame twice and the PNGs are byte-identical.
   `seed` + `keep` light a deterministic random share; `always` for card panels. `clickSweep(at, pick)` =
   a 1.4 s wave across the pressed element only. On a light fill (luminance > 0.6) the ring turns dark.
 - `PageSubject.tsx`: the capture in an iframe; holds the render until load, fonts and images; applies both.
+- `charts.ts` `chartLayers(card, at, { dur, step, numbers })`: the whole chart motion of one card in one line,
+  e.g. `...chartLayers({ sel: '[data-slot="frame"]', index: 2 }, 4.2)`. Numbers (`.tabular-nums`) count,
+  progress wipes, tick rows (`[role="img"] > span`) grow, lines draw, area fills wipe, bars grow, pie/radial
+  slices land one by one, dots land last; parts the card lacks are skipped silently (`optional` targets).
+  Start here, then add hand-written layers for anything it misses (a big value without `tabular-nums`, rows).
+  Limits: negative bars grow from the bottom (write a `grow` layer with `from: "top"`); canvas charts are images.
+- Charts: SVG charts (Recharts, Nivo, visx) build per part. Line: `draw` on the path itself
+  (`path.recharts-line-curve`), not its `g` (a group falls back to `wipe`); a dashed line draws solid and snaps
+  to dashed on landing, so `wipe` it. Bars: `grow` on `.recharts-bar-rectangle path` or any rect/div. Dots, area
+  fills and pie slices are separate elements: `rise` or `wipe` them. Canvas charts are one image: `wipe` or `rise`.
 - Positions use offsetLeft/Top: the 3D camera breaks getBoundingClientRect.
 
 ## Direction (what the user asked for, keep it)
