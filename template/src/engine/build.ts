@@ -6,7 +6,7 @@
 import { easeInOut, select } from "./dom"
 import type { Layer } from "./scene"
 
-const PROPS = ["opacity", "translate", "scale", "clip-path", "transform-origin", "transform"]
+const PROPS = ["opacity", "translate", "scale", "clip-path", "transform-origin", "transform", "transform-box", "stroke-dasharray", "stroke-dashoffset"]
 
 function mark(el: HTMLElement) {
   if (el.dataset.build) return
@@ -82,7 +82,18 @@ function one(el: HTMLElement, t: number, start: number, l: Layer, touched: Set<H
   } else if (kind === "tick") {
     el.style.scale = `1 ${p}`
     el.style.transformOrigin = "bottom"
-  } else if (kind === "wipe") {
+  } else if (kind === "grow") {
+    const from = l.from ?? "bottom"
+    el.style.scale = from === "left" || from === "right" ? `${p} 1` : `1 ${p}`
+    el.style.transformOrigin = from
+    el.style.transformBox = "fill-box" // SVG: grow from the bar's own edge, not the chart's
+  } else if (kind === "draw" && "getTotalLength" in el && (el as unknown as SVGGeometryElement).getTotalLength() > 0) {
+    // Solid strokes only: a dashed line draws solid, then snaps to dashed (use "wipe").
+    const len = (el as unknown as SVGGeometryElement).getTotalLength()
+    el.style.strokeDasharray = `${len} ${len}`
+    el.style.strokeDashoffset = String(len * (1 - p))
+  } else if (kind === "wipe" || kind === "draw") {
+    // "draw" on a group or non-path falls back to a wipe, so nothing ships static.
     el.style.clipPath = `inset(0 ${(1 - p) * 100}% 0 0)`
   } else if (kind === "count") {
     count(el, p)

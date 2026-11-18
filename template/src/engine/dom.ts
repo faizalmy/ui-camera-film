@@ -27,6 +27,7 @@ export function select(root: HTMLElement, tg: Target): HTMLElement[] {
 const warned = new Set<string>()
 /** Say once when a target matches nothing: a scene written for another page. */
 function warn(tg: Target, what: string): HTMLElement[] {
+  if (tg.optional) return []
   const key = JSON.stringify(tg)
   if (!warned.has(key)) {
     warned.add(key)

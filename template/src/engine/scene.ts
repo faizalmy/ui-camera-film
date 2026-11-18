@@ -5,13 +5,15 @@
 
 /** Where to look: every match of `sel` under the root, or under the
     `nth` match of `scope`. `sel: ":scope"` means the scope element itself.
-    `index` keeps only that one match. */
-export type Target = { sel: string; scope?: string; nth?: number; index?: number }
+    `index` keeps only that one match. `optional` skips the "matched nothing" warning (generic layers). */
+export type Target = { sel: string; scope?: string; nth?: number; index?: number; optional?: boolean }
 
 export type Kind =
   | "rise" // fade up from `dist` px below
   | "tick" // grow from the bottom edge (bars, ticks)
   | "wipe" // reveal left to right (charts, rules, progress)
+  | "draw" // an SVG line draws itself along its path (line/area strokes, arrows)
+  | "grow" // SVG or HTML bars grow from their own base edge (`from`, default bottom)
   | "count" // the first number in the text counts up from 0 (any page)
   | "roll" // odometer: digit strips (translateY -10% per digit) roll from 0
 
@@ -21,6 +23,8 @@ export type Layer = Target & {
   /** Duration per element, seconds. */
   dur: number
   kind?: Kind
+  /** "grow": the edge bars grow from (horizontal bars: "left"; negative: "top"). */
+  from?: "bottom" | "top" | "left" | "right"
   /** Rise distance, px. */
   dist?: number
   /** Delay between matches (for "roll": between digits), seconds. */
